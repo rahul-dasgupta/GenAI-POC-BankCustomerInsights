@@ -3,6 +3,7 @@ import io
 # MODIFIED: Removed 'clear_rag_objects' from the import
 from MyGenAIPOC_RAG import build_qa_chain
 from MyGenAIPOC import process_customer
+import os 
 
 st.title("Customer Insights GenAI Assistant")
 
@@ -41,9 +42,9 @@ if lookup and customer_id:
             json_file=json_file,
             embedding_deployment="text-embedding-ada-002",
             embedding_model="text-embedding-ada-002",
-            embedding_endpoint=st.secrets["azure_openai"]["embedding_endpoint"],
+            embedding_endpoint=os.environ.get('OPENAI_ENDPOINT'),
             llm_deployment="gpt-4o",
-            llm_endpoint=st.secrets["azure_openai"]["llm_endpoint"]
+            llm_endpoint=os.environ.get('OPENAI_ENDPOINT')
         )
         st.session_state.chat_history = []
         st.success("Customer found. You can now ask questions.")

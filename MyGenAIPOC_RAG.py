@@ -1,11 +1,11 @@
 import os
 # ADDED: Import the uuid module to generate unique names
 import uuid
-import streamlit as st
+import os
 
-os.environ["OPENAI_API_TYPE"] = st.secrets["azure_openai"]["api_type"]
-os.environ["OPENAI_API_KEY"] = st.secrets["azure_openai"]["api_key"]
-os.environ["OPENAI_API_VERSION"] = st.secrets["azure_openai"]["api_version"]
+os.environ["OPENAI_API_TYPE"] = os.environ.get('OPENAI_API_TYPE')
+os.environ["OPENAI_API_KEY"] = os.environ.get('OPENAI_API_KEY')
+os.environ["OPENAI_API_VERSION"] = os.environ.get('OPENAI_API_VERSION')
 
 import camelot
 import pandas as pd

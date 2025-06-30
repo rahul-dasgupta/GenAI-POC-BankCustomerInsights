@@ -2,14 +2,14 @@ import pyodbc
 from azure.storage.blob import BlobServiceClient
 import json
 import io
-import streamlit as st
+import os
 
 # Replace with your Azure SQL details
-server = st.secrets["azure_sql"]["server"]
-database = st.secrets["azure_sql"]["database"]
-username = st.secrets["azure_sql"]["username"]
-password = st.secrets["azure_sql"]["password"]
-driver = st.secrets["azure_sql"]["driver"]
+server = os.environ.get('SQL_SERVER')
+database = os.environ.get('SQL_DATABASE')
+username = os.environ.get('SQL_USERNAME')
+password = os.environ.get('SQL_PASSWORD')
+driver = '{ODBC Driver 18 for SQL Server}'
 
 # Create connection string
 conn_str = (
@@ -25,8 +25,8 @@ conn_str = (
 
 def download_blob(blob_name):
     # Replace with your Azure Storage details
-    connection_string = st.secrets["azure_storage"]["connection_string"]
-    container_name = st.secrets["azure_storage"]["container_name"]
+    connection_string = os.environ.get('STORAGE_CONNECTION_STRING')
+    container_name = os.environ.get('STORAGE_CONTAINER_NAME')
     # Create the BlobServiceClient object
     blob_service_client = BlobServiceClient.from_connection_string(connection_string)
     container_client = blob_service_client.get_container_client(container_name)
