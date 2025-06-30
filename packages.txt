@@ -1,3 +1,0 @@
-ghostscript
-unixodbc-dev
-msodbcsql18
