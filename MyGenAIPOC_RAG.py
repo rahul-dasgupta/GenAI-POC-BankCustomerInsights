@@ -73,7 +73,8 @@ def build_qa_chain(pdf_file, json_file, embedding_deployment, embedding_model, e
         model=embedding_model,
         azure_endpoint=embedding_endpoint
     )
-    vectorstore = Chroma.from_documents(split_docs, embeddings)
+    # Always use in-memory Chroma (no persist_directory)
+    vectorstore = Chroma.from_documents(split_docs, embeddings, persist_directory=None)
 
     # 7. Build RetrievalQA chain
     retriever = vectorstore.as_retriever(search_kwargs={"k": 10})
