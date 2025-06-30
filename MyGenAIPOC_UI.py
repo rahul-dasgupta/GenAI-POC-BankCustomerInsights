@@ -1,6 +1,7 @@
 import streamlit as st
 import io
-from MyGenAIPOC_RAG import build_qa_chain  # Import the function from your RAG module
+# MODIFIED: Removed 'clear_rag_objects' from the import
+from MyGenAIPOC_RAG import build_qa_chain
 from MyGenAIPOC import process_customer
 
 st.title("Customer Insights GenAI Assistant")
@@ -34,8 +35,9 @@ if lookup and customer_id:
     st.session_state.pdf_file = pdf_file
     st.session_state.json_file = json_file
     if json_file:
+        # Each call to build_qa_chain now creates a new, isolated pipeline
         st.session_state.qa_chain = build_qa_chain(
-            pdf_file=pdf_file,  # pdf_file can be None
+            pdf_file=pdf_file,
             json_file=json_file,
             embedding_deployment="text-embedding-ada-002",
             embedding_model="text-embedding-ada-002",
@@ -52,7 +54,6 @@ if lookup and customer_id:
 
 if st.session_state.qa_chain:
     st.subheader(f"Customer ID: {st.session_state.customer_id}")
-    # Initial system prompt
     if len(st.session_state.chat_history) == 0:
         initial_query = ("""I am a relationship manager in Axis Bank and this attached document has details about one of my customers. \
            First check if the Customer Status is Exited or Blacklisted. \
@@ -64,10 +65,8 @@ if st.session_state.qa_chain:
         result = st.session_state.qa_chain(initial_query)
         st.session_state.chat_history.append(("assistant", result['result']))
 
-    # Display chat history
     st.markdown("### Key Customer Insights")
     for idx, (sender, msg) in enumerate(st.session_state.chat_history):
-        # Do not show the initial query (idx==0 and sender=="assistant"), but show all subsequent queries and answers
         if idx == 0 and sender == "assistant":
             st.markdown(f"**Assistant:** {msg}")
         elif sender == "user":
@@ -75,7 +74,6 @@ if st.session_state.qa_chain:
         elif sender == "assistant":
             st.markdown(f"**Assistant:** {msg}")
 
-    # User input for follow-up
     col1, col2, col3 = st.columns([6,2,3])
     with col1:
         follow_up_key = f"follow_up_{st.session_state.follow_up_counter}"
@@ -83,22 +81,18 @@ if st.session_state.qa_chain:
     with col2:
         send = st.button("Send")
     with col3:
-        no_more = st.button("No more questions", key="no-more-questions")
+         no_more = st.button("No more questions", key="no-more-questions")
 
+    # MODIFIED: The logic for the "No more questions" button is now simplified.
     if no_more:
-        st.success("Thank You")
-        st.markdown("""
-            <script>
-                setTimeout(function() { window.close(); }, 3000);
-            </script>
-        """, unsafe_allow_html=True)
-        st.stop()
+        # Clear the entire session state, which removes the old qa_chain object.
+        st.session_state.clear()
+        # Rerun the app to present a fresh interface to the user.
+        st.rerun()
 
     elif send and follow_up.strip() and st.session_state.qa_chain:
         st.session_state.chat_history.append(("user", follow_up))
         result = st.session_state.qa_chain(follow_up)
         st.session_state.chat_history.append(("assistant", result['result']))
-        st.session_state.follow_up_counter += 1  # Increment to reset input
+        st.session_state.follow_up_counter += 1
         st.rerun()
-
-
