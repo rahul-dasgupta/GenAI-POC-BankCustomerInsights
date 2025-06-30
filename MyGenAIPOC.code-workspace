@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "MyGenAIPOC",
+			"path": "MyGenAIPOC"
+		}
+	],
+	"settings": {
+		"dataworkspace.excludedProjects": [
+			"MyGenAIPOC.sqlproj"
+		]
+	}
+}
