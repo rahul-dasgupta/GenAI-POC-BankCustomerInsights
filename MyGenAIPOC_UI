@@ -1,0 +1,44 @@
+import io
+from MyGenAIPOC_RAG import build_qa_chain  # Import the function from your RAG module
+from MyGenAIPOC import process_customer
+
+
+
+# Accept input for CustomerID
+customer_id = input("Enter Customer ID or Aadhar: ")
+pdf_file, json_file = process_customer(customer_id)
+
+if json_file:
+    # Build the QA chain using the downloaded PDF (if any) and in-memory JSON:
+    qa_chain = build_qa_chain(
+        pdf_file=pdf_file,  # pdf_file can be None
+        json_file=json_file,
+        embedding_deployment="text-embedding-ada-002",
+        embedding_model="text-embedding-ada-002",
+        embedding_endpoint="https://dasgu-mchng52g-eastus2.openai.azure.com/",
+        llm_deployment="gpt-4o",
+        llm_endpoint="https://dasgu-mchng52g-eastus2.openai.azure.com/"
+    )
+
+    # Initial question
+    query = (
+        """I am a relationship manager in Axis Bank and this attached document has details about one of my customers. \
+           First check if the Customer Status is Exited or Blacklisted. \
+           If Exited then say Customer is no longer with us and give no further response. \
+           If Blacklisted then say Customer is Blacklisted and give no further response.\
+           If neither then don't mention anything about the status, just give the Customer Name and CustomerType and move on to answer the questions below\
+           1. Are there any upcoming dates in 2023 for his deposits, credit cards, investments, insurance, etc.?\
+           2. What are the top 2 up-selling or cross-selling opportunities for this customer based on his current portfolio?"""
+    )
+    while True:
+        result = qa_chain(query)
+        print("Answer:", result['result'])
+        follow_up = input("Do you have any further questions about this customer? (Type your question or 'no' to exit): ").strip()
+        if follow_up.lower() in ["no", "n", "no further questions", "exit", "quit"]:
+            print("Session ended.")
+            break
+        query = follow_up
+else:
+    print("Customer not found. Please check the Customer ID or Aadhar and try again.")
+
+
