@@ -41,9 +41,9 @@ if lookup and customer_id:
             json_file=json_file,
             embedding_deployment="text-embedding-ada-002",
             embedding_model="text-embedding-ada-002",
-            embedding_endpoint="https://dasgu-mchng52g-eastus2.openai.azure.com/",
+            embedding_endpoint=st.secrets["azure_openai"]["embedding_endpoint"],
             llm_deployment="gpt-4o",
-            llm_endpoint="https://dasgu-mchng52g-eastus2.openai.azure.com/"
+            llm_endpoint=st.secrets["azure_openai"]["llm_endpoint"]
         )
         st.session_state.chat_history = []
         st.success("Customer found. You can now ask questions.")

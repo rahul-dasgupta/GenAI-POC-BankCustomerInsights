@@ -1,0 +1,10 @@
+streamlit
+pyodbc
+azure-storage-blob
+langchain-openai
+langchain-community
+langchain
+pandas
+camelot-py
+opencv-python-headless
+chromadb

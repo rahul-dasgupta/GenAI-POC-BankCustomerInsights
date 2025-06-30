@@ -2,13 +2,14 @@ import pyodbc
 from azure.storage.blob import BlobServiceClient
 import json
 import io
+import streamlit as st
 
 # Replace with your Azure SQL details
-server = 'mygenaipoc.database.windows.net'
-database = 'genaipoc'
-username = 'rdg'
-password = 'Azure@4758'
-driver = '{ODBC Driver 18 for SQL Server}'
+server = st.secrets["azure_sql"]["server"]
+database = st.secrets["azure_sql"]["database"]
+username = st.secrets["azure_sql"]["username"]
+password = st.secrets["azure_sql"]["password"]
+driver = st.secrets["azure_sql"]["driver"]
 
 # Create connection string
 conn_str = (
@@ -24,8 +25,8 @@ conn_str = (
 
 def download_blob(blob_name):
     # Replace with your Azure Storage details
-    connection_string = "DefaultEndpointsProtocol=https;AccountName=mygenaipoc;AccountKey=p8J69jdICgF4PZMnl9KmkBNxOx0lzg7PC815pdFywJqB1dqusZlsnAXg6PzpMiAXCopZCihYFuWn+AStxyPMcQ==;EndpointSuffix=core.windows.net"
-    container_name = "mygenaipoc"
+    connection_string = st.secrets["azure_storage"]["connection_string"]
+    container_name = st.secrets["azure_storage"]["container_name"]
     # Create the BlobServiceClient object
     blob_service_client = BlobServiceClient.from_connection_string(connection_string)
     container_client = blob_service_client.get_container_client(container_name)

@@ -2,9 +2,9 @@ import os
 # ADDED: Import the uuid module to generate unique names
 import uuid
 
-os.environ["OPENAI_API_TYPE"] = "azure"
-os.environ["OPENAI_API_KEY"] = "Cn2IWRpS5EpqWfPW5X3Y5HKXXotOjzTxWhSN9CqtCsBjazajvb2YJQQJ99BFACHYHv6XJ3w3AAAAACOGifdX"
-os.environ["OPENAI_API_VERSION"] = "2024-12-01-preview"
+os.environ["OPENAI_API_TYPE"] = st.secrets["azure_openai"]["api_type"]
+os.environ["OPENAI_API_KEY"] = st.secrets["azure_openai"]["api_key"]
+os.environ["OPENAI_API_VERSION"] = st.secrets["azure_openai"]["api_version"]
 
 import camelot
 import pandas as pd
