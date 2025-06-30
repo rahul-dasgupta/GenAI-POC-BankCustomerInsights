@@ -1,6 +1,7 @@
 import os
 # ADDED: Import the uuid module to generate unique names
 import uuid
+import streamlit as st
 
 os.environ["OPENAI_API_TYPE"] = st.secrets["azure_openai"]["api_type"]
 os.environ["OPENAI_API_KEY"] = st.secrets["azure_openai"]["api_key"]
