@@ -4,6 +4,7 @@ import io
 from MyGenAIPOC_RAG import build_qa_chain
 from MyGenAIPOC import process_customer
 import os 
+import requests
 
 st.title("Customer Insights GenAI Assistant")
 
@@ -56,14 +57,40 @@ if lookup and customer_id:
 if st.session_state.qa_chain:
     st.subheader(f"Customer ID: {st.session_state.customer_id}")
     if len(st.session_state.chat_history) == 0:
-        initial_query = ("""I am a relationship manager in Axis Bank and this attached document has details about one of my customers. \
-           First check if the Customer Status is Exited or Blacklisted. \
-           If Exited then say Customer is no longer with us and give no further response. \
-           If Blacklisted then say Customer is Blacklisted and give no further response.\
-           If neither then don't mention anything, just give the Customer Name and if it is Burgundy, and move on to answer the questions below\
-           1. Are there any upcoming dates in 2023 for his deposits, credit cards, investments, insurance, etc.?\
-           2. What are the top 2 up-selling or cross-selling opportunities for this customer based on his current portfolio?""")
-        result = st.session_state.qa_chain(initial_query)
+        # First, send a 'system' message to set the context
+        system_prompt_url = "https://mygenaipoc.blob.core.windows.net/mygenaipoc/SystemPrompt.txt"
+        response = requests.get(system_prompt_url)
+        if response.status_code == 200:
+            system_message = response.text.strip()
+        else:
+            system_message = (
+                "You are a generative AI assistant at a bank. "
+                "Give insights to the user based on the customer information. "
+                "Never mention any bank's name in your answers. "
+                "If you don't have enough information, say 'I don't know'."
+            )
+        st.session_state.chat_history.append(("system", system_message))
+
+        # Then, send a 'user' message to request a snapshot
+        # Fetch the first prompt from the provided URL
+        first_prompt_url = "https://mygenaipoc.blob.core.windows.net/mygenaipoc/FirstPrompt.txt"
+        response = requests.get(first_prompt_url)
+        if response.status_code == 200:
+            user_message = response.text.strip()
+        else:
+            user_message = (
+                "First check the Customer Status. "
+                "If Status is 'Exited', say 'Customer is no longer with us' and give no further response. "
+                "If Status is 'Blacklisted', say 'Customer is Blacklisted' and give no further response. "
+                "If neither, then:\n"
+                "1. Give the Customer Name.\n"
+                "2. If the Customer Type is 'Burgundy', say 'This is a Priority Banking Customer.'\n"
+                "3. Give a snapshot of the customer in 5 bullet points."
+            )
+        st.session_state.chat_history.append(("user", user_message))
+
+        # Get the response from the qa_chain
+        result = st.session_state.qa_chain(user_message)
         st.session_state.chat_history.append(("assistant", result['result']))
 
     st.markdown("### Key Customer Insights")
