@@ -3,9 +3,9 @@ import os
 import uuid
 import os
 
-os.environ["OPENAI_API_TYPE"] = os.environ.get('OPENAI_API_TYPE')
-os.environ["OPENAI_API_KEY"] = os.environ.get('OPENAI_API_KEY')
-os.environ["OPENAI_API_VERSION"] = os.environ.get('OPENAI_API_VERSION')
+#os.environ["OPENAI_API_TYPE"] = os.environ.get('OPENAI_API_TYPE')
+#os.environ["OPENAI_API_KEY"] = os.environ.get('OPENAI_API_KEY')
+#os.environ["OPENAI_API_VERSION"] = os.environ.get('OPENAI_API_VERSION')
 
 import camelot
 import pandas as pd

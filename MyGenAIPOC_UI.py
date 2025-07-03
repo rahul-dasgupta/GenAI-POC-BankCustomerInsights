@@ -105,10 +105,10 @@ if st.session_state.qa_chain:
         elif sender == "assistant":
             st.markdown(f"**Assistant:** {msg}")
 
-    col1, col2, col3 = st.columns([9, 2, 3], vertical_alignment="center")
+    col1, col2, col3 = st.columns([6, 2, 3], vertical_alignment="center")
     with col1:
         follow_up_key = f"follow_up_{st.session_state.follow_up_counter}"
-        follow_up = st.text_input("Ask a follow-up question:", key=follow_up_key)
+        follow_up = st.text_input("Ask a follow-up question:", key=follow_up_key, label_visibility="collapsed", placeholder="Ask a follow-up question...")
     with col2:
         send = st.button("Send")
     with col3:
