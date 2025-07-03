@@ -8,3 +8,4 @@ pandas
 camelot-py
 opencv-python-headless
 chromadb
+jq

@@ -64,4 +64,3 @@ def process_customer(customer_id):
 #            else:
 #                print("No OneGlanceStatement found for this customer.")
     return pdf_file, json_file
-
