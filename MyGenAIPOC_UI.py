@@ -1,10 +1,13 @@
 import streamlit as st
-import io
-# MODIFIED: Removed 'clear_rag_objects' from the import
 from MyGenAIPOC_RAG import build_qa_chain
 from MyGenAIPOC import process_customer
 import os 
 import requests
+from dotenv import load_dotenv
+
+# Load .env file for local development.
+# This should be at the top of your script.
+load_dotenv()
 
 st.title("Customer Insights GenAI Assistant")
 
@@ -102,14 +105,14 @@ if st.session_state.qa_chain:
         elif sender == "assistant":
             st.markdown(f"**Assistant:** {msg}")
 
-    col1, col2, col3 = st.columns([6,2,3])
+    col1, col2, col3 = st.columns([9, 2, 3], vertical_alignment="center")
     with col1:
         follow_up_key = f"follow_up_{st.session_state.follow_up_counter}"
         follow_up = st.text_input("Ask a follow-up question:", key=follow_up_key)
     with col2:
         send = st.button("Send")
     with col3:
-         no_more = st.button("No more questions", key="no-more-questions")
+         no_more = st.button("No More Questions", key="no-more-questions")
 
     # MODIFIED: The logic for the "No more questions" button is now simplified.
     if no_more:

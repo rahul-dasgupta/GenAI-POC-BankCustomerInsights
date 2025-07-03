@@ -9,3 +9,4 @@ camelot-py
 opencv-python-headless
 chromadb
 jq
+python-dotenv
