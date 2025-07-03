@@ -93,11 +93,11 @@ if st.session_state.qa_chain:
         result = st.session_state.qa_chain(user_message)
         st.session_state.chat_history.append(("assistant", result['result']))
 
-    st.markdown("### Key Customer Insights")
+    st.markdown("### Customer Insights")
     for idx, (sender, msg) in enumerate(st.session_state.chat_history):
         if idx == 0 and sender == "assistant":
             st.markdown(f"**Assistant:** {msg}")
-        elif sender == "user":
+        elif sender == "user" and idx != 1:  # Skip displaying the first user message
             st.markdown(f"**You:** {msg}")
         elif sender == "assistant":
             st.markdown(f"**Assistant:** {msg}")
