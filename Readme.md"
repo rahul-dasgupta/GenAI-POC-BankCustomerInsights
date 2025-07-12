@@ -1,0 +1,41 @@
+# What is this app?
+
+This app is for a generative AI customer insights assistant, that was created as a learning exercise.
+
+---
+
+# What does this app do?
+
+- You give a Customer ID or Aadhar (Indian Government ID)  
+- It retrieves data from SQL database and a PDF file for that customer  
+- Gives insight based on the customer data  
+- Allows user to ask further questions  
+- Has some basic guardrails (e.g. don’t show full account numbers etc.)
+
+---
+
+# How does this app work?
+
+This uses a Retrieval Augmented Generation (RAG) pattern:
+
+1. Extraction & Pre-processing  
+2. Splitting, chunking  
+3. Embedding, Vectorization  
+4. Query, chat management  
+5. Dockerization and hosting on Azure Cloud
+
+---
+
+# Tech Stack
+
+- Python  
+- Azure AI Foundry  
+- OpenAI GPT 4o  
+- Langchain  
+- Streamlit UI  
+- Azure SQL  
+- Azure Storage  
+- Chroma  
+- Pandas  
+- Camelot  
+- PyODBC  
