@@ -11,9 +11,9 @@ import pandas as pd
 from langchain_core.documents import Document
 from langchain_community.document_loaders import PyPDFLoader, JSONLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_classic.chains import RetrievalQA
 from langchain_openai import AzureOpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
-from langchain.chains import RetrievalQA
 from langchain_openai import AzureChatOpenAI
 import io
 import tempfile

@@ -5,6 +5,7 @@ openai
 langchain-openai
 langchain-community
 langchain
+langchain-classic
 langchain-text-splitters
 pandas
 camelot-py
