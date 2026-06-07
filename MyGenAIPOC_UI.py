@@ -9,6 +9,13 @@ from dotenv import load_dotenv
 # This should be at the top of your script.
 load_dotenv()
 
+
+def require_env(var_name):
+    value = os.environ.get(var_name)
+    if not value:
+        raise RuntimeError(f"Missing required environment variable: {var_name}")
+    return value
+
 st.title("Customer Insights GenAI Assistant")
 
 if 'qa_chain' not in st.session_state:
@@ -40,15 +47,20 @@ if lookup and customer_id:
     st.session_state.pdf_file = pdf_file
     st.session_state.json_file = json_file
     if json_file:
+        openai_endpoint = require_env("OPENAI_ENDPOINT")
+        openai_deployment = require_env("OPENAI_DEPLOYMENT")
+        openai_embedding_deployment = require_env("OPENAI_EMBEDDING_DEPLOYMENT")
+        openai_embedding_model = require_env("OPENAI_EMBEDDING_MODEL")
+
         # Each call to build_qa_chain now creates a new, isolated pipeline
         st.session_state.qa_chain = build_qa_chain(
             pdf_file=pdf_file,
             json_file=json_file,
-            embedding_deployment="text-embedding-ada-002",
-            embedding_model="text-embedding-ada-002",
-            embedding_endpoint=os.environ.get('OPENAI_ENDPOINT'),
-            llm_deployment="model-router",
-            llm_endpoint=os.environ.get('OPENAI_ENDPOINT')
+            embedding_deployment=openai_embedding_deployment,
+            embedding_model=openai_embedding_model,
+            embedding_endpoint=openai_endpoint,
+            llm_deployment=openai_deployment,
+            llm_endpoint=openai_endpoint
         )
         st.session_state.chat_history = []
         st.success("Customer found. You can now ask questions.")

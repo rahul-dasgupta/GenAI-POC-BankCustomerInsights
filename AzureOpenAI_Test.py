@@ -1,16 +1,16 @@
 import os
 from openai import OpenAI
 
-deployment = os.environ.get("AZURE_OPENAI_DEPLOYMENT", "model-router")
+deployment = os.environ.get("OPENAI_DEPLOYMENT", "model-router")
 
-endpoint = os.environ.get("AZURE_OPENAI_ENDPOINT")
-api_key = os.environ.get("AZURE_OPENAI_API_KEY")
+endpoint = os.environ.get("OPENAI_ENDPOINT")
+api_key = os.environ.get("OPENAI_API_KEY")
 
 if not endpoint:
-    raise ValueError("Set AZURE_OPENAI_ENDPOINT to your Azure OpenAI resource URL.")
+    raise ValueError("Set OPENAI_ENDPOINT to your Azure OpenAI resource URL.")
 
 if not api_key:
-    raise ValueError("Set AZURE_OPENAI_API_KEY to an Azure OpenAI API key.")
+    raise ValueError("Set OPENAI_API_KEY to an Azure OpenAI API key.")
 
 base_url = endpoint.rstrip("/") + "/openai/v1/"
 

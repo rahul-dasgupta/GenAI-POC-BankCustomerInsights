@@ -1,7 +1,6 @@
 import os
 # ADDED: Import the uuid module to generate unique names
 import uuid
-import os
 
 #os.environ["OPENAI_API_TYPE"] = os.environ.get('OPENAI_API_TYPE')
 #os.environ["OPENAI_API_KEY"] = os.environ.get('OPENAI_API_KEY')
@@ -9,9 +8,9 @@ import os
 
 import camelot
 import pandas as pd
-from langchain.schema import Document
+from langchain_core.documents import Document
 from langchain_community.document_loaders import PyPDFLoader, JSONLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import AzureOpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain.chains import RetrievalQA

@@ -5,6 +5,7 @@ openai
 langchain-openai
 langchain-community
 langchain
+langchain-text-splitters
 pandas
 camelot-py
 opencv-python-headless
