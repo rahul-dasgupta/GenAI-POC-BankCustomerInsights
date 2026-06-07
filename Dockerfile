@@ -1,19 +1,14 @@
-# Start with a standard Python base image
-FROM python:3.9-slim
+# Start with a stable Debian Bookworm-based Python image
+FROM python:3.9-slim-bookworm
 
-# Install all system dependencies in a single RUN command to avoid conflicts
+# Install system dependencies and Microsoft ODBC Driver 18
 RUN apt-get update && \
-    # Install prerequisite packages needed for adding new repositories and for your app
-    apt-get install -y gnupg curl g++ ghostscript && \
-    # Add the Microsoft GPG key for authentication
-    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-    # Add the Microsoft package repository itself
-    curl https://packages.microsoft.com/config/debian/11/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
-    # IMPORTANT: Update package lists again after adding the new repository
+    apt-get install -y curl g++ ghostscript gnupg ca-certificates && \
+    mkdir -p /etc/apt/keyrings && \
+    curl -sSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/keyrings/microsoft.gpg && \
+    echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/debian/12/prod bookworm main" > /etc/apt/sources.list.d/mssql-release.list && \
     apt-get update && \
-    # Install the ODBC driver and unixodbc-dev together, accepting the EULA
     ACCEPT_EULA=Y apt-get install -y msodbcsql18 unixodbc-dev && \
-    # Clean up apt caches to keep the final image size smaller
     rm -rf /var/lib/apt/lists/*
 
 # Set the working directory in the container
