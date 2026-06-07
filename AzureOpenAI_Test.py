@@ -2,8 +2,8 @@ import os
 from openai import AzureOpenAI
 
 endpoint = "https://dasgu-mchng52g-eastus2.cognitiveservices.azure.com/"
-model_name = "gpt-4o"
-deployment = "gpt-4o"
+model_name = "model-router"
+deployment = "model-router"
 
 subscription_key = "Cn2IWRpS5EpqWfPW5X3Y5HKXXotOjzTxWhSN9CqtCsBjazajvb2YJQQJ99BFACHYHv6XJ3w3AAAAACOGifdX"
 api_version = "2024-12-01-preview"

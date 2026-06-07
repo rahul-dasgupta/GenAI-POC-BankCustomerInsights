@@ -47,7 +47,7 @@ if lookup and customer_id:
             embedding_deployment="text-embedding-ada-002",
             embedding_model="text-embedding-ada-002",
             embedding_endpoint=os.environ.get('OPENAI_ENDPOINT'),
-            llm_deployment="gpt-4o",
+            llm_deployment="model-router",
             llm_endpoint=os.environ.get('OPENAI_ENDPOINT')
         )
         st.session_state.chat_history = []
