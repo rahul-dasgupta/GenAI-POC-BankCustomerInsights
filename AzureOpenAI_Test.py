@@ -1,34 +1,37 @@
 import os
-from openai import AzureOpenAI
+from openai import OpenAI
 
-endpoint = "https://dasgu-mchng52g-eastus2.cognitiveservices.azure.com/"
-model_name = "model-router"
-deployment = "model-router"
+deployment = os.environ.get("AZURE_OPENAI_DEPLOYMENT", "model-router")
 
-subscription_key = "Cn2IWRpS5EpqWfPW5X3Y5HKXXotOjzTxWhSN9CqtCsBjazajvb2YJQQJ99BFACHYHv6XJ3w3AAAAACOGifdX"
-api_version = "2024-12-01-preview"
+endpoint = os.environ.get("AZURE_OPENAI_ENDPOINT")
+api_key = os.environ.get("AZURE_OPENAI_API_KEY")
 
-client = AzureOpenAI(
-    api_version=api_version,
-    azure_endpoint=endpoint,
-    api_key=subscription_key,
+if not endpoint:
+    raise ValueError("Set AZURE_OPENAI_ENDPOINT to your Azure OpenAI resource URL.")
+
+if not api_key:
+    raise ValueError("Set AZURE_OPENAI_API_KEY to an Azure OpenAI API key.")
+
+base_url = endpoint.rstrip("/") + "/openai/v1/"
+
+client = OpenAI(
+    api_key=api_key,
+    base_url=base_url,
 )
 
-response = client.chat.completions.create(
-    messages=[
+response = client.responses.create(
+    model=deployment,
+    input=[
         {
             "role": "system",
-            "content": "You are a helpful assistant.",
+            "content": [{"type": "input_text", "text": "You are a helpful assistant."}],
         },
         {
             "role": "user",
-            "content": "I am going to Paris, what should I see?",
-        }
+            "content": [{"type": "input_text", "text": "I am going to Paris, what should I see?"}],
+        },
     ],
-    max_tokens=4096,
-    temperature=1.0,
-    top_p=1.0,
-    model=deployment
+    max_output_tokens=4096,
 )
 
-print(response.choices[0].message.content)
+print(response.output_text)

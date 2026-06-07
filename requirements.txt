@@ -1,6 +1,7 @@
 streamlit
 pyodbc
 azure-storage-blob
+openai
 langchain-openai
 langchain-community
 langchain

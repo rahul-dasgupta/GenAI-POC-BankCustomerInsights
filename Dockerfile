@@ -1,5 +1,5 @@
 # Start with a stable Debian Bookworm-based Python image
-FROM python:3.9-slim-bookworm
+FROM python:3.11-slim-bookworm
 
 # Install system dependencies and Microsoft ODBC Driver 18
 RUN apt-get update && \
